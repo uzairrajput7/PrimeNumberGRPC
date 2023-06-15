@@ -5,7 +5,7 @@ namespace PrimeNumberServer.Services
     public class PrimeValidatorService : PrimeValidator.PrimeValidatorBase
     {
         private readonly ILogger<PrimeValidatorService> _logger;
-        public static SortedList<long, bool> primes = new SortedList<long, bool>();
+        public static SortedList<long, int> primes = new SortedList<long, int>();
 
         public PrimeValidatorService(ILogger<PrimeValidatorService> logger)
         {
@@ -15,6 +15,11 @@ namespace PrimeNumberServer.Services
         public override Task<IsPrimeNumberReply> IsPrimeNumber(PrimeNumberRequest request, ServerCallContext context)
         {
             var response = isPrimeNumber(request.Number);
+            if (response)
+                if (primes.ContainsKey(request.Number))
+                    primes[request.Number] = primes[request.Number]+1;
+                else
+                    primes.Add(request.Number, 1);
             return Task.FromResult(new IsPrimeNumberReply
             {
                 Message = response ? "True" : "false"
