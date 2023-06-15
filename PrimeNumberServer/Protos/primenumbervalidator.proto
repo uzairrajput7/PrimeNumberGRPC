@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+option csharp_namespace = "PrimeNumberServer";
+
+package primenumbervalidator;
+
+service PrimeValidator {
+	rpc IsPrimeNumber (PrimeNumberRequest) returns (IsPrimeNumberReply);
+}
+
+message PrimeNumberRequest {
+	int64 id = 1;
+	int64 timestamp = 2;
+	int64 number = 3;
+}
+
+message IsPrimeNumberReply {
+	string message = 1;
+}
